@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="IOCLibrary.InsertUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IOCLibrary"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding Source= {StaticResource Locator}, Path=BookInsertVM}">
+
+    <Grid Background="#181735">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.RowSpan="3">
+            <TextBlock Text="ISBN:"></TextBlock>
+            <TextBlock Text="Name:"></TextBlock>
+            <TextBlock Text="Author Name:"></TextBlock>
+            <TextBlock Text="Publisher:"></TextBlock>
+            <TextBlock Text="Category:"></TextBlock>
+            <TextBlock Text="Price:"></TextBlock>
+            <TextBlock Text="Stock:"></TextBlock>
+            <TextBlock Text="Number in the series:"></TextBlock>
+            <TextBlock Text="Published Date:"></TextBlock>
+            <TextBlock Text="Author Discount:"></TextBlock>
+            <TextBlock Text="Publisher Discount:"></TextBlock>
+        </StackPanel>
+        <StackPanel Grid.RowSpan="3" Grid.Column ="1">
+            <TextBox Text="{Binding GetISBN,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox"></TextBox>
+            <TextBox Text="{Binding GetName,Mode=TwoWay}" PreviewTextInput="StringValidationTextBox"></TextBox>
+            <TextBox Text="{Binding GetAuthor,Mode=TwoWay}" PreviewTextInput="StringValidationTextBox"></TextBox>
+            <TextBox Text="{Binding GetPublisher,Mode=TwoWay}" PreviewTextInput="StringValidationTextBox"></TextBox>
+            <ComboBox>
+                <CheckBox Content="Horror" IsChecked ="{Binding HorrorFlag}">
+                </CheckBox>
+                <CheckBox Content="Fiction" IsChecked ="{Binding FictionFlag}">
+                </CheckBox>
+                <CheckBox Content="Romance" IsChecked ="{Binding RomanceFlag}">
+                </CheckBox>
+                <CheckBox Content="Kitchen" IsChecked ="{Binding KitchenFlag}">
+                </CheckBox>
+            </ComboBox>
+            <TextBox Text="{Binding GetPrice,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox"></TextBox>
+            <TextBox Text="{Binding GetStock,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox"></TextBox>
+            <TextBox Text="{Binding GetNumberInSeries,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox"></TextBox>
+            <DatePicker Text="{Binding GetPublishedDate}"></DatePicker>
+            <TextBox Text ="{Binding AuthorDiscount,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox">
+            </TextBox>
+            <TextBox Text ="{Binding PublisherDiscount,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox">
+            </TextBox>
+        </StackPanel>
+        <Button Content="Add Book" Grid.RowSpan="2" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" Command="{Binding AddBookCommand}"></Button>
+    </Grid>
+</UserControl>

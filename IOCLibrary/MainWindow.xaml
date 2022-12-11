@@ -1,0 +1,26 @@
+﻿<Window x:Class="IOCLibrary.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IOCLibrary"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Background="#181735">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TabControl>
+            <TabItem Header="Book" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                <local:InsertUC/>
+            </TabItem>
+            <TabItem Header="Journal">
+                <local:JournalInsertUC Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+            </TabItem>
+        </TabControl>
+        <local:UCAdmin Grid.Column="1"/>
+        <local:AdminUC1Result Grid.Column="2"/>
+    </Grid>
+</Window>

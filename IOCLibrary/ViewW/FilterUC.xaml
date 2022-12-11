@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="IOCLibrary.AdminUC1Result"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IOCLibrary"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding Source= {StaticResource Locator}, Path=FilterVM}">
+    <Grid Background="#181735">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column ="0">
+            <TextBlock Text="ISBN:" />
+            <TextBlock Text="Name:"></TextBlock>
+            <TextBlock Text="Discount:" />
+            <TextBlock Text="Price:" />
+            <TextBlock Text="Stock:" />
+            <TextBlock Text="Category:" />
+        </StackPanel>
+        <StackPanel Grid.Column ="1">
+            <TextBox Text="{Binding  GetFilterISBN, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox"></TextBox>
+            <TextBox Text="{Binding  GetFilterName, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" PreviewTextInput="StringValidationTextBox"></TextBox>
+            <TextBox Text="{Binding  GetFilterDiscount, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox"></TextBox>
+            <TextBox Text="{Binding  GetFilterPrice, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox"></TextBox>
+            <TextBox Text="{Binding  GetFilterStock, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox"></TextBox>
+            <ComboBox>
+                <CheckBox Content="Horror" IsChecked ="{Binding HorrorFlag}">
+                </CheckBox>
+                <CheckBox Content="Fiction" IsChecked ="{Binding FictionFlag}">
+                </CheckBox>
+                <CheckBox Content="Romance" IsChecked ="{Binding RomanceFlag}">
+                </CheckBox>
+                <CheckBox Content="Kitchen" IsChecked ="{Binding KitchenFlag}">
+                </CheckBox>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center">
+            <TextBlock FontSize="15" FontWeight="Bold" Text="Filter With:" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center"></TextBlock>
+            <DockPanel>
+                <CheckBox IsChecked="{Binding FilterISBNFlag}">ISBN</CheckBox>
+                <CheckBox IsChecked="{Binding FilterDiscountFlag}">Discount</CheckBox>
+                <CheckBox IsChecked="{Binding FilterPriceFlag}">Price</CheckBox>
+                <CheckBox IsChecked="{Binding FilterStockFlag}">Stock</CheckBox>
+            </DockPanel>
+        </StackPanel>
+        <DockPanel HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2">
+            <Button HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" Content="Filter" Command="{Binding FilterCommand}"></Button>
+            <Button HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" Content="All Collection" Command="{Binding EverythingCommand}"></Button>
+        </DockPanel>
+    </Grid>
+</UserControl>
