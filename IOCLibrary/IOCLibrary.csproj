@@ -81,7 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataBase\CollectionItem.cs" />
+    <Compile Include="Interfaces\ILibraryItem.cs" />
     <Compile Include="DataBase\DBLibrary.cs" />
     <Compile Include="ViewModel\JournalInsertMVM.cs" />
     <Compile Include="ViewW\JournalInsertUC.xaml.cs">

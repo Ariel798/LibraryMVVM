@@ -14,15 +14,14 @@ namespace Service.Services
         public event Action RefreshEvent;
         public event Action notifySameISBN;
         public event Action notifyWorngISBN;
-        public void SupplyJournal(int iSBN, string name, string authorName, string publisher, DateTime published, Category category, int price, double discount, int stock, int numberOfLegion)
+        public void SupplyJournal(Journal journal)
         {
-            double preDiscount = Calculate(category);
-            if (discount < preDiscount)
-                discount = preDiscount;
-            Journal journal = new Journal(iSBN, name, authorName, publisher, published, category, price, discount, stock, numberOfLegion);
+            double preDiscount = Calculate(journal.GetCategory);
+            if (journal.GetDiscount < preDiscount)
+                journal.GetDiscount = preDiscount;
             try
             {
-                CollectionManager.HashTable.Add(iSBN, journal);
+                CollectionManager.HashTable.Add(journal.GetISBN, journal);
                 CollectionManager.GetCatalog.Add(journal);
                 RefreshEvent?.Invoke();
             }

@@ -9,11 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Forms;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace IOCLibrary
 {
@@ -27,9 +30,9 @@ namespace IOCLibrary
         readonly IJournal _journal;
         readonly IEditable _editable;
         static DBLibrary dB = new DBLibrary();
-        private LibraryItem m_SelectedItemn;
+        private ILibraryItem m_SelectedItemn;
         public event PropertyChangedEventHandler PropertyChanged;
-        public LibraryItem SelectedItem
+        public ILibraryItem SelectedItem
         {
             get
             {
@@ -68,49 +71,38 @@ namespace IOCLibrary
             _journal = journal;
 
             //Filling the library with DB items.
-
             LoadDB();
 
             CollectionView = CollectionViewSource.GetDefaultView(CollectionManager.FilterCollection);
             _filter.RefreshEvent += RefreshFilteredCollection;
             _admin.RefreshEvent += RefreshFilteredCollection;
+            _admin.AddEvent += AddBookToDB;
             _journal.RefreshEvent += RefreshFilteredCollection;
             EditItemCommand = new RelayCommand(EditItemMethod);
         }
         private static void LoadDB()
         {
-            foreach (var item in dB.CollectionItem.ToList())
+            foreach (var journal in dB.Journals.ToList())
             {
-                if (item.TypeOfItem.ToString().Contains("Book"))
-                {
-                    var bookI = new Book(item.ISBN, item.C_Name, item.AuthorName, item.Publisher, (DateTime)item.Published, DeclareCategory(item), item.Price, item.Discount, int.Parse(item.Stock), (int)item.CopyNumber);
-                    CollectionManager.FilterCollection.Add(bookI);
-                }
-                else if (item.TypeOfItem.ToString().Contains("Journal"))
-                {
-                    var journalI = new Journal(item.ISBN, item.C_Name, item.AuthorName, item.Publisher, (DateTime)item.Published, DeclareCategory(item), item.Price, item.Discount, int.Parse(item.Stock), (int)item.CopyNumber);
-                    CollectionManager.FilterCollection.Add(journalI);
-                }
-
+                CollectionManager.FilterCollection.Add(journal);
+            }
+            foreach (var book in dB.Books.ToList())
+            {
+                CollectionManager.FilterCollection.Add(book);
             }
         }
-        //public static void AddToDB(LibraryItem itemFromUser)
-        //{
-        //    CollectionItem itemNew = new CollectionItem(itemFromUser);
-        //    dB.CollectionItem.Add(itemNew);
-        //}
-        private static Category DeclareCategory(CollectionItem item)
+        public static void AddBookToDB(Book bookFromUser)
         {
-            if (item.Category.Contains("Fiction"))
-                return Category.Fiction;
-            else if (item.Category.Contains("Romance"))
-                return Category.Romance;
-            else if (item.Category.Contains("Horror"))
-                return Category.Horror;
-            else if (item.Category.Contains("Kitchen"))
-                return Category.Kitchen;
-            else
-                return default;
+            try
+            {
+                var temp = bookFromUser.GetPublishedDate;
+                dB.Books.Add(bookFromUser);
+                dB.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         private void EditItemMethod()
         {
@@ -137,11 +129,12 @@ namespace IOCLibrary
                 MessageBox.Show("No item was selected!", "Alert");
             }
         }
-        private void EditItemInList(LibraryItem item, int price, double discount, int stock)
+        private void EditItemInList(ILibraryItem item, int price, double discount, int stock)
         {
-            _editable.EditItem(item, price, discount, stock);
+            var bookToEdit = new Book { GetPrice = price, GetDiscount = discount, GetStock = stock };
+            _editable.EditItem(item, bookToEdit);
         }
-        private void ToStringItemMethod(LibraryItem item)
+        private void ToStringItemMethod(ILibraryItem item)
         {
             try
             {

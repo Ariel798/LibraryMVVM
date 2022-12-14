@@ -11,17 +11,20 @@ namespace Service
         public event Action RefreshEvent;
         public event Action notifySameISBN;
         public event Action notifyWorngISBN;
-        public void SupplyBook(int iSBN, string name, string authorName, string publisher, DateTime published, Category category, int price, double discount, int stock, int numberInSeries)
+        public event Action<Book> AddEvent;
+        //Change method name to supply to Collection View Model
+        public void SupplyBook(Book book)
         {
-            double preDiscount = Calculate(category);
-            if (discount < preDiscount)
-                discount = preDiscount;
-            Book book = new Book(iSBN, name, authorName, publisher, published, category, price, discount, stock, numberInSeries);
+            double preDiscount = CalculateDiscountByCategory(book.GetCategory);
+            bool resetDiscount = book.GetDiscount < preDiscount;
+            if (resetDiscount) book.GetDiscount = preDiscount;
+
             try
             {
-                CollectionManager.HashTable.Add(iSBN, book);
+                CollectionManager.HashTable.Add(book.GetISBN, book);
                 CollectionManager.GetCatalog.Add(book);
                 RefreshEvent?.Invoke();
+                AddEvent?.Invoke(book);
             }
             catch (InvalidOperationException a)
             {
@@ -37,9 +40,12 @@ namespace Service
                 return;
             }
         }
-        double Calculate(Category category)
+
+        //Add booleans
+        double CalculateDiscountByCategory(Category category)
         {
-            if (category == Category.Romance)
+            bool discountForHorror = category == Category.Romance;
+            if (discountForHorror)
             {
                 return 15;
             }

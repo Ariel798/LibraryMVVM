@@ -1,3 +1,4 @@
+using OOPFFinalProject.Models;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -11,40 +12,10 @@ namespace IOCLibrary.DataBase
             : base("name=DBLibrary")
         {
         }
-
-        public virtual DbSet<CollectionItem> CollectionItem { get; set; }
-
+        public virtual DbSet<Journal> Journals { get; set; }
+        public DbSet<Book> Books { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CollectionItem>()
-                .Property(e => e.C_Name)
-                .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CollectionItem>()
-                .Property(e => e.AuthorName)
-                .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CollectionItem>()
-                .Property(e => e.Publisher)
-                .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CollectionItem>()
-                .Property(e => e.Category)
-                .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CollectionItem>()
-                .Property(e => e.Stock)
-                .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<CollectionItem>()
-                .Property(e => e.TypeOfItem)
-                .IsFixedLength()
-                .IsUnicode(false);
         }
     }
 }

@@ -1,18 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OOPFFinalProject.Models
 {
-    public class Book : LibraryItem
+    public class Book : ILibraryItem
     {
-        readonly int _numberInSeries;
-        public int NumberInSeries { get => _numberInSeries; }
-        public Book(int iSBN, string name, string authorName, string publisher, DateTime published, Category category, int price, double discount, int stock, int numberInSeries) : base(iSBN, name, authorName, publisher, published, category, price, discount, stock)
-        {
-            _numberInSeries = numberInSeries;
-        }
+        [Key]
+        public int GetISBN { get; set; }
+        public string GetName { get; set; }
+        public string GetAuthor { get; set; }
+
+        public string GetPublisher { get; set; }
+
+        public string GetPublishedDate { get; set; }
+
+        public Category GetCategory { get; set; }
+
+        public double GetDiscount { get; set; }
+        public int GetStock { get; set; }
+        public int NumberInSeries { get; set; }
+        public int GetPrice { get; set; }
     }
 }

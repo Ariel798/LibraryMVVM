@@ -1,4 +1,5 @@
 ﻿using OOPFFinalProject;
+using OOPFFinalProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Service.API
 {
     public interface IEditable
     {
-        bool EditItem(LibraryItem m_selectedItem, int price, double discount, int stock);
+        bool EditItem(ILibraryItem m_selectedItem,Book book);
     }
 }

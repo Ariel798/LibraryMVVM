@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using OOPFFinalProject;
+using OOPFFinalProject.Models;
 using Service;
 using Service.API;
 using System;
@@ -48,7 +49,8 @@ namespace IOCLibrary
         {
             Category Categories = CalculateCategory();
             double discountMax = CalculateDiscount();
-            _journal.SupplyJournal(GetISBN, GetName, GetAuthor, GetPublisher, GetPublishedDate, Categories, GetPrice, discountMax, GetStock, GetNumberOfLegion);
+            var journal = new Journal { GetISBN = this.GetISBN, GetName = this.GetName, GetAuthor = this.GetAuthor, GetPublisher = GetPublisher, GetPublishedDate = GetPublishedDate.ToString("MMMM d, yyyy"), GetCategory = Categories, GetPrice = GetPrice, GetDiscount = discountMax, GetStock = GetStock, NumberOfLegion = GetNumberOfLegion };
+            _journal.SupplyJournal(journal);
         }
         private double CalculateDiscount()
         {

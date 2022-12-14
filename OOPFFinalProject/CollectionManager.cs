@@ -10,13 +10,13 @@ namespace OOPFFinalProject
     public class CollectionManager
     {
         static Hashtable hashtable;
-        private static List<LibraryItem> _catalog;
-        public static List<LibraryItem> FilterCollection { get; set; }
+        private static List<ILibraryItem> _catalog;
+        public static List<ILibraryItem> FilterCollection { get; set; }
         public static Hashtable HashTable { get => hashtable; set => hashtable = value; }
-        public static List<LibraryItem> GetCatalog { get => _catalog; set => _catalog = value; }
-        public static List<LibraryItem> RunOnCollection(int iSBN, string nameFilter, double discount, int price, int stock, Category categories, bool iSBNFlag, bool discountFlag, bool priceFlag, bool stockFlag)
+        public static List<ILibraryItem> GetCatalog { get => _catalog; set => _catalog = value; }
+        public static List<ILibraryItem> RunOnCollection(int iSBN, string nameFilter, double discount, int price, int stock, Category categories, bool iSBNFlag, bool discountFlag, bool priceFlag, bool stockFlag)
         {
-            var filteredList = new List<LibraryItem>();
+            var filteredList = new List<ILibraryItem>();
             bool check = true;
             foreach (var item in _catalog)
             {
@@ -64,7 +64,7 @@ namespace OOPFFinalProject
             }
             return filteredList;
         }
-        public LibraryItem this[int iSBN]
+        public ILibraryItem this[int iSBN]
         {
             get
             {
@@ -73,7 +73,7 @@ namespace OOPFFinalProject
         }
         public CollectionManager()
         {
-            _catalog = new List<LibraryItem>();
+            _catalog = new List<ILibraryItem>();
             FilterCollection = GetCatalog;
             hashtable = new Hashtable();
         }

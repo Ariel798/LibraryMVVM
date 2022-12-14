@@ -1,4 +1,5 @@
 ﻿using OOPFFinalProject;
+using OOPFFinalProject.Models;
 using Service.API;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,14 @@ namespace Service
     public class EditService : IEditable
     {
         readonly CollectionManager collectionManager = new CollectionManager();
-        public bool EditItem(LibraryItem m_selectedItem, int price, double discount, int stock)
+        public bool EditItem(ILibraryItem m_selectedItem, Book book)
         {
             try
             {
-                LibraryItem item = collectionManager[m_selectedItem.GetISBN];
-                item.GetPrice = price;
-                item.GetDiscount = discount;
-                item.GetStock = stock;
+                ILibraryItem item = collectionManager[m_selectedItem.GetISBN];
+                item.GetPrice = book.GetPrice;
+                item.GetDiscount = book.GetDiscount;
+                item.GetStock = book.GetStock;
                 return true;
             }
             catch (Exception)

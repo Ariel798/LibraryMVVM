@@ -13,6 +13,7 @@ namespace Service
     public interface IBook
     {
         event Action RefreshEvent;
-        void SupplyBook(int iSBN, string name, string authorName, string publisher, DateTime published, Category category, int price, double discount, int stock, int numberInSeries);
+        event Action<Book> AddEvent;
+        void SupplyBook(Book book);
     }
 }

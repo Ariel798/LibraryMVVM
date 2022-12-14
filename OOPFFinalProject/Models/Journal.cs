@@ -1,18 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace OOPFFinalProject.Models
 {
-    public class Journal : LibraryItem
+    public class Journal : ILibraryItem
     {
-        readonly int _numberOfLegion;
-        public int NumberOfLegion { get => _numberOfLegion; }
-        public Journal(int iSBN, string name, string authorName, string publisher, DateTime published, Category category, int price, double discount, int stock, int numberOfLegion) : base(iSBN, name, authorName, publisher, published, category, price, discount, stock)
-        {
-            _numberOfLegion = numberOfLegion;
-        }
+        [Key]
+        public int GetISBN { get; set; }
+        public int NumberOfLegion { get; set; }
+        public string GetName { get; set; }
+        public string GetAuthor { get; set; }
+
+        public string GetPublisher { get; set; }
+
+        public string GetPublishedDate { get; set; }
+
+        public Category GetCategory { get; set; }
+        public int GetPrice { get; set; }
+
+        public double GetDiscount { get; set; }
+        public int GetStock { get; set; }
     }
 }

@@ -14,17 +14,17 @@ using System.Windows;
 
 namespace IOCLibrary
 {
-    //Summary:
-    //Class that repesent the VM for the insert book user control.
     public class BookInsertVM : ViewModelBase
     {
-        readonly IBook _admin;
+        readonly IBook ibook;
         readonly INotifyBook _notify;
-
+        #region flags
         private bool horrorFlag;
         private bool fictionFlag;
         private bool romanceFlag;
         private bool kitchenFlag;
+        #endregion
+        #region Properties
         public bool HorrorFlag { get { return horrorFlag; } set { horrorFlag = value; } }
         public bool FictionFlag { get { return fictionFlag; } set { fictionFlag = value; } }
         public bool RomanceFlag { get { return romanceFlag; } set { romanceFlag = value; } }
@@ -39,10 +39,11 @@ namespace IOCLibrary
         public int GetPrice { get; set; }
         public int GetStock { get; set; }
         public int GetNumberInSeries { get; set; }
+        #endregion
         public RelayCommand AddBookCommand { get; set; }
-        public BookInsertVM(IBook admin, INotifyBook notify)
+        public BookInsertVM(IBook ibook, INotifyBook notify)
         {
-            _admin = admin;
+            this.ibook = ibook;
             _notify = notify;
             AddBookCommand = new RelayCommand(AddBookToList);
             _notify.notifySameISBN += ShowErrorMessageBox;
@@ -50,9 +51,17 @@ namespace IOCLibrary
         }
         private void AddBookToList()
         {
-            Category Categories = CalculateCategory();
-            double discountMax = CalculateDiscount();
-            _admin.SupplyBook(GetISBN, GetName, GetAuthor, GetPublisher, GetPublishedDate, Categories, GetPrice,discountMax , GetStock, GetNumberInSeries);
+            try
+            {
+                Category Categories = CalculateCategory();
+                double discountMax = CalculateDiscount();
+                var book = new Book { GetISBN = this.GetISBN, GetName = this.GetName, GetAuthor = this.GetAuthor, GetPublisher = GetPublisher, GetPublishedDate = GetPublishedDate.ToString("MMMM d, yyyy"), GetCategory = Categories, GetPrice = GetPrice, GetDiscount = discountMax, GetStock = GetStock, NumberInSeries = GetNumberInSeries };
+                ibook.SupplyBook(book);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         private Category CalculateCategory()
         {
@@ -94,7 +103,7 @@ namespace IOCLibrary
                 return 0;
             }
         }
-            private void ShowErrorMessageBox()
+        private void ShowErrorMessageBox()
         {
             MessageBox.Show("Cannot add two product with the same ISBN!", $"Notice!");
         }
@@ -102,6 +111,5 @@ namespace IOCLibrary
         {
             MessageBox.Show("The ISBN cannot be a negative number!", $"Notice!");
         }
-
     }
 }

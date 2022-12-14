@@ -1,4 +1,5 @@
 ﻿using OOPFFinalProject;
+using OOPFFinalProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace Service.API
     public interface IJournal
     {
         event Action RefreshEvent;
-        void SupplyJournal(int iSBN, string name, string authorName, string publisher, DateTime published, Category category, int price, double discount, int stock, int numberOfLegion);
+        void SupplyJournal(Journal journal);
     }
 }
