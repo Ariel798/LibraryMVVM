@@ -1,9 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using IOCLibrary.Context;
 using OOPFFinalProject;
+using OOPFFinalProject.Interfaces;
 using OOPFFinalProject.Models;
 using Service;
-using Service.API;
+using Service.IServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,9 +18,10 @@ namespace IOCLibrary
 {
     public class BookInsertVM : ViewModelBase
     {
+        #region Fields
         readonly IBook ibook;
         readonly INotifyBook _notify;
-        #region flags
+        readonly ICalculator calculator;
         private bool horrorFlag;
         private bool fictionFlag;
         private bool romanceFlag;
@@ -41,9 +44,10 @@ namespace IOCLibrary
         public int GetNumberInSeries { get; set; }
         #endregion
         public RelayCommand AddBookCommand { get; set; }
-        public BookInsertVM(IBook ibook, INotifyBook notify)
+        public BookInsertVM(IBook ibook, INotifyBook notify, ICalculator calculator)
         {
             this.ibook = ibook;
+            this.calculator= calculator;
             _notify = notify;
             AddBookCommand = new RelayCommand(AddBookToList);
             _notify.notifySameISBN += ShowErrorMessageBox;
@@ -53,54 +57,14 @@ namespace IOCLibrary
         {
             try
             {
-                Category Categories = CalculateCategory();
-                double discountMax = CalculateDiscount();
-                var book = new Book { GetISBN = this.GetISBN, GetName = this.GetName, GetAuthor = this.GetAuthor, GetPublisher = GetPublisher, GetPublishedDate = GetPublishedDate.ToString("MMMM d, yyyy"), GetCategory = Categories, GetPrice = GetPrice, GetDiscount = discountMax, GetStock = GetStock, NumberInSeries = GetNumberInSeries };
+                Category Categories = calculator.CalculateCategory(horrorFlag,fictionFlag,romanceFlag,kitchenFlag);
+                double discountMax = calculator.CalculateDiscount(AuthorDiscount,PublisherDiscount);
+                var book = new Book { GetISBN = this.GetISBN, GetName = this.GetName, GetAuthor = this.GetAuthor, GetPublisher = GetPublisher, GetPublishedDate = GetPublishedDate.ToString("MMMM d, yyyy"), GetCategory = Categories, Price = GetPrice, Discount = discountMax, Stock = GetStock, NumberInSeries = GetNumberInSeries };
                 ibook.SupplyBook(book);
             }
             catch (Exception)
             {
                 throw;
-            }
-        }
-        private Category CalculateCategory()
-        {
-            int first = 0;
-            int second = 0;
-            int third = 0;
-            int fourth = 0;
-            if (horrorFlag)
-            {
-                first = 2;
-            }
-            if (fictionFlag)
-            {
-                second = 4;
-            }
-            if (romanceFlag)
-            {
-                third = 8;
-            }
-            if (kitchenFlag)
-            {
-                fourth = 16;
-            }
-            int sum = first + second + third + fourth;
-            Category Categories = (Category)sum;
-            return Categories;
-        }
-        private double CalculateDiscount()
-        {
-            try
-            {
-                double discountAuthor = double.Parse(AuthorDiscount);
-                double discountPublisher = double.Parse(PublisherDiscount);
-                double finalMax = Math.Max(discountAuthor, discountPublisher);
-                return finalMax;
-            }
-            catch (Exception)
-            {
-                return 0;
             }
         }
         private void ShowErrorMessageBox()

@@ -20,9 +20,9 @@ namespace OOPFFinalProject.Models
 
         public Category GetCategory { get; set; }
 
-        public double GetDiscount { get; set; }
-        public int GetStock { get; set; }
+        public double Discount { get; set; }
+        public int Stock { get; set; }
         public int NumberInSeries { get; set; }
-        public int GetPrice { get; set; }
+        public int Price { get; set; }
     }
 }

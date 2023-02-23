@@ -53,10 +53,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectionManager.cs" />
+    <Compile Include="Interfaces\ICalculator.cs" />
     <Compile Include="Interfaces\ILibraryItem.cs" />
     <Compile Include="Models\ILibraryItem.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Journal.cs" />
+    <Compile Include="Objects\Calculator.cs" />
+    <Compile Include="Objects\FilterItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using OOPFFinalProject.Objects;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +7,7 @@ namespace OOPFFinalProject
 {
     //The manager of the collection. 
     //Includes the filter method 'Run On Collection.
-    //Managing the hash table as well for vertifing the ISBN uniquey nature.
+    //Holds the hash table for vertifing the ISBN uniquey nature.
     public class CollectionManager
     {
         static Hashtable hashtable;
@@ -14,45 +15,45 @@ namespace OOPFFinalProject
         public static List<ILibraryItem> FilterCollection { get; set; }
         public static Hashtable HashTable { get => hashtable; set => hashtable = value; }
         public static List<ILibraryItem> GetCatalog { get => _catalog; set => _catalog = value; }
-        public static List<ILibraryItem> RunOnCollection(int iSBN, string nameFilter, double discount, int price, int stock, Category categories, bool iSBNFlag, bool discountFlag, bool priceFlag, bool stockFlag)
+        public static List<ILibraryItem> Filter(FilterItem filterItem)
         {
             var filteredList = new List<ILibraryItem>();
             bool check = true;
             foreach (var item in _catalog)
             {
-                if (iSBNFlag)
+                if (filterItem.filterISBNFlag)
                 {
-                    if (!(item.GetISBN == iSBN))
+                    if (!(item.GetISBN == filterItem.GetISBN))
                     {
                         check = false;
                     }
                 }
-                if (nameFilter != null && !item.GetName.Contains(nameFilter))
+                if (filterItem.GetName != null && !item.GetName.ToLower().Contains(filterItem.GetName))
                 {
                     check = false;
                 }
-                if (discountFlag)
+                if (filterItem.filterDiscountFlag)
                 {
-                    if (!(item.GetDiscount <= discount))
+                    if (!(item.Discount <= filterItem.Discount))
                     {
                         check = false;
                     }
                 }
-                if (priceFlag)
+                if (filterItem.filterPriceFlag)
                 {
-                    if (!(item.GetPrice >= price))
+                    if (!(item.Price >= filterItem.Price))
                     {
                         check = false;
                     }
                 }
-                if (stockFlag)
+                if (filterItem.filterStockFlag)
                 {
-                    if (!(item.GetStock <= stock))
+                    if (!(item.Stock <= filterItem.Stock))
                     {
                         check = false;
                     }
                 }
-                if (!(item.GetCategory == categories))
+                if (!(item.GetCategory == filterItem.GetCategory))
                 {
                     check = false;
                 }

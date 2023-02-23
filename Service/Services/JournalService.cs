@@ -1,6 +1,6 @@
 ﻿using OOPFFinalProject;
 using OOPFFinalProject.Models;
-using Service.API;
+using Service.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +14,18 @@ namespace Service.Services
         public event Action RefreshEvent;
         public event Action notifySameISBN;
         public event Action notifyWorngISBN;
+        public event Action<Journal> AddEvent;
         public void SupplyJournal(Journal journal)
         {
             double preDiscount = Calculate(journal.GetCategory);
-            if (journal.GetDiscount < preDiscount)
-                journal.GetDiscount = preDiscount;
+            if (journal.Discount < preDiscount)
+                journal.Discount = preDiscount;
             try
             {
                 CollectionManager.HashTable.Add(journal.GetISBN, journal);
                 CollectionManager.GetCatalog.Add(journal);
                 RefreshEvent?.Invoke();
+                AddEvent?.Invoke(journal);
             }
             catch (ArgumentException ex)
             {
@@ -34,7 +36,6 @@ namespace Service.Services
                 notifyWorngISBN?.Invoke();
                 return;
             }
-
         }
         double Calculate(Category category)
         {

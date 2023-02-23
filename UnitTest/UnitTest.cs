@@ -13,8 +13,8 @@ namespace UnitTest
         BookService bookService = new BookService();
         JournalService journalService = new JournalService();
         EditService editService = new EditService();
-        Book errorBook = new Book {GetISBN= -3, GetName = "s", GetPrice = 5, GetDiscount = 1, GetCategory = Category.Horror, GetAuthor = "d", GetPublishedDate = DateTime.Now.ToString("MMMM d, yyyy"), GetPublisher = "s", GetStock = 2, NumberInSeries = 1 };
-        Journal errorJournal = new Journal { GetISBN = -3, GetName = "s", GetPrice = 5, GetDiscount = -3, GetCategory = Category.Horror, GetAuthor = "d", GetPublishedDate = DateTime.Now.ToString("MMMM d, yyyy"), GetPublisher = "s", GetStock = 2, NumberOfLegion = 3 };
+        Book errorBook = new Book {GetISBN= -3, GetName = "s", Price = 5, Discount = 1, GetCategory = Category.Horror, GetAuthor = "d", GetPublishedDate = DateTime.Now.ToString("MMMM d, yyyy"), GetPublisher = "s", Stock = 2, NumberInSeries = 1 };
+        Journal errorJournal = new Journal { GetISBN = -3, GetName = "s", Price = 5, Discount = -3, GetCategory = Category.Horror, GetAuthor = "d", GetPublishedDate = DateTime.Now.ToString("MMMM d, yyyy"), GetPublisher = "s", Stock = 2, NumberOfLegion = 3 };
         public void AddforTest()
         {
             bookService.SupplyBook(errorBook);
@@ -36,7 +36,7 @@ namespace UnitTest
         [TestMethod]    
         public void TestMethodEdit()
         {
-            Assert.IsFalse(editService.EditItem(errorJournal, new Book { GetPrice = 2,GetStock = 1, GetDiscount = 1}));
+            Assert.IsFalse(editService.EditItem(errorJournal, new Book { Price = 2,Stock = 1, Discount = 1}));
         }
     }
 }

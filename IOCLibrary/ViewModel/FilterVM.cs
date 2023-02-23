@@ -1,9 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using OOPFFinalProject;
+using OOPFFinalProject.Interfaces;
 using OOPFFinalProject.Models;
+using OOPFFinalProject.Objects;
 using Service;
-using Service.API;
+using Service.IServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +20,7 @@ namespace IOCLibrary
     //The VM of the filter user control.
     public class FilterVM : ViewModelBase , INotifyPropertyChanged
     {
+        #region Members
         private bool filterISBNFlag;
         private bool filterDiscountFlag;
         private bool filterPriceFlag;
@@ -34,8 +37,9 @@ namespace IOCLibrary
         public bool FictionFlag { get { return fictionFlag; } set { fictionFlag = value; } }
         public bool RomanceFlag { get { return romanceFlag; } set { romanceFlag = value; } }
         public bool KitchenFlag { get { return kitchenFlag; } set { kitchenFlag = value; } }
-        readonly IBook _admin;
+        readonly IBook _iBook;
         readonly IFilter _filter;
+        readonly ICalculator calculator;
         public static ICollectionView CollectionView { get; set; }
         public RelayCommand FilterCommand { get; set; }
         public RelayCommand EverythingCommand { get; set; }
@@ -44,10 +48,12 @@ namespace IOCLibrary
         public double GetFilterDiscount { get; set; }
         public int GetFilterPrice { get; set; }
         public int GetFilterStock { get; set; }
-        public FilterVM(IBook admin, IFilter filter)
+        #endregion
+        public FilterVM(IBook admin, IFilter filter,ICalculator calculator)
         {
-            _admin = admin;
+            _iBook = admin;
             _filter = filter;
+            this.calculator= calculator;
             FilterCommand = new RelayCommand(FilterCommandMethod);
             EverythingCommand = new RelayCommand(EverythingCommandMethod);
         }
@@ -57,34 +63,9 @@ namespace IOCLibrary
         }
         private void FilterCommandMethod()
         {
-            Category categories = CalculateCategory();
-            _filter.ReturnFilteredCollection(GetFilterISBN ,GetFilterName, GetFilterDiscount, GetFilterPrice, GetFilterStock,categories,filterISBNFlag, filterDiscountFlag, filterPriceFlag, filterStockFlag);
-        }
-        private Category CalculateCategory()
-        {
-            int first = 0;
-            int second = 0;
-            int third = 0;
-            int fourth = 0;
-            if (horrorFlag)
-            {
-                first = 2;
-            }
-            if (fictionFlag)
-            {
-                second = 4;
-            }
-            if (romanceFlag)
-            {
-                third = 8;
-            }
-            if (kitchenFlag)
-            {
-                fourth = 16;
-            }
-            int sum = first + second + third + fourth;
-            Category Categories = (Category)sum;
-            return Categories;
+            Category categories = calculator.CalculateCategory(horrorFlag,fictionFlag,romanceFlag,kitchenFlag);
+            var filterObj = new FilterItem { GetISBN = GetFilterISBN, GetName = GetFilterName, Discount = GetFilterDiscount, Price = GetFilterPrice, Stock = GetFilterStock, GetCategory = categories, filterISBNFlag = filterISBNFlag, filterDiscountFlag = filterDiscountFlag, filterPriceFlag = filterPriceFlag, filterStockFlag = filterStockFlag };
+            _filter.ReturnFilteredCollection(filterObj);
         }
     }
 }

@@ -2,8 +2,11 @@
 
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using IOCLibrary.Context;
+using OOPFFinalProject.Interfaces;
+using OOPFFinalProject.Objects;
 using Service;
-using Service.API;
+using Service.IServices;
 using Service.Services;
 
 namespace IOCLibrary.ViewModel
@@ -14,10 +17,12 @@ namespace IOCLibrary.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
+            SimpleIoc.Default.Register<LibraryContext>();
             SimpleIoc.Default.Register<BookService>();
             SimpleIoc.Default.Register<EditService>();
             SimpleIoc.Default.Register<DataFilterService>();
             SimpleIoc.Default.Register<JournalService>();
+            SimpleIoc.Default.Register<ICalculator,Calculator>();
             SimpleIoc.Default.Register<IBook>(() => SimpleIoc.Default.GetInstance<BookService>());
             SimpleIoc.Default.Register<INotifyBook>(() => SimpleIoc.Default.GetInstance<BookService>());
             SimpleIoc.Default.Register<IEditable>(() => SimpleIoc.Default.GetInstance<EditService>());

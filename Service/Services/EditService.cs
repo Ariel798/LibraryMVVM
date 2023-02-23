@@ -1,6 +1,6 @@
 ﻿using OOPFFinalProject;
 using OOPFFinalProject.Models;
-using Service.API;
+using Service.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +17,9 @@ namespace Service
             try
             {
                 ILibraryItem item = collectionManager[m_selectedItem.GetISBN];
-                item.GetPrice = book.GetPrice;
-                item.GetDiscount = book.GetDiscount;
-                item.GetStock = book.GetStock;
+                item.Price = book.Price;
+                item.Discount = book.Discount;
+                item.Stock = book.Stock;
                 return true;
             }
             catch (Exception)

@@ -1,5 +1,6 @@
 ﻿using OOPFFinalProject;
-using Service.API;
+using OOPFFinalProject.Objects;
+using Service.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Service
     public class DataFilterService:IFilter
     {
         public event Action RefreshEvent;
-        public void ReturnFilteredCollection(int iSBN, string nameFilter, double discount, int price, int stock, Category Categories, bool iSBNFlag, bool discountFlag, bool priceFlag, bool stockFlag)
+        public void ReturnFilteredCollection(FilterItem filterItem)
         {
-            CollectionManager.FilterCollection = CollectionManager.RunOnCollection(iSBN, nameFilter, discount, price, stock, Categories, iSBNFlag, discountFlag, priceFlag, stockFlag);
+            CollectionManager.FilterCollection = CollectionManager.Filter(filterItem);
             RefreshEvent?.Invoke();
         }
         public void ReturnFullCollection()

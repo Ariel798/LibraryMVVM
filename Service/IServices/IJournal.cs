@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.API
+namespace Service.IServices
 {
     public interface IJournal
     {
         event Action RefreshEvent;
+        event Action<Journal> AddEvent;
         void SupplyJournal(Journal journal);
     }
 }

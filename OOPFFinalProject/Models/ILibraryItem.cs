@@ -16,9 +16,9 @@ namespace OOPFFinalProject
         string GetPublisher { get; }
         string GetPublishedDate { get; }
         Category GetCategory { get; }
-        int GetPrice { get; set; }
-        double GetDiscount { get; set; }
-        int GetStock { get; set; }
+        int Price { get; set; }
+        double Discount { get; set; }
+        int Stock { get; set; }
         #endregion
     }
     [Flags]

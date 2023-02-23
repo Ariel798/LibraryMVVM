@@ -1,24 +1,25 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace OOPFFinalProject.Models
+namespace OOPFFinalProject.Objects
 {
-    public class Journal : ILibraryItem
+    public class FilterItem : ILibraryItem
     {
-        [Key]
         public int GetISBN { get; set; }
-        public int NumberOfLegion { get; set; }
         public string GetName { get; set; }
         public string GetAuthor { get; set; }
-
         public string GetPublisher { get; set; }
-
         public string GetPublishedDate { get; set; }
-
         public Category GetCategory { get; set; }
         public int Price { get; set; }
-
         public double Discount { get; set; }
         public int Stock { get; set; }
+        public bool filterISBNFlag { get; set; }
+        public bool filterDiscountFlag { get; set; }
+        public bool filterStockFlag { get; set; }
+        public bool filterPriceFlag { get; set; }
     }
 }

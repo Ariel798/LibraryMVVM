@@ -1,6 +1,6 @@
 ﻿using OOPFFinalProject;
 using OOPFFinalProject.Models;
-using Service.API;
+using Service.IServices;
 using System;
 using System.Linq;
 
@@ -16,8 +16,8 @@ namespace Service
         public void SupplyBook(Book book)
         {
             double preDiscount = CalculateDiscountByCategory(book.GetCategory);
-            bool resetDiscount = book.GetDiscount < preDiscount;
-            if (resetDiscount) book.GetDiscount = preDiscount;
+            bool resetDiscount = book.Discount < preDiscount;
+            if (resetDiscount) book.Discount = preDiscount;
 
             try
             {
@@ -40,7 +40,6 @@ namespace Service
                 return;
             }
         }
-
         //Add booleans
         double CalculateDiscountByCategory(Category category)
         {

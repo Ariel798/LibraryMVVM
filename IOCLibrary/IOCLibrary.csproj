@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Context\LibraryContext.cs" />
     <Compile Include="Interfaces\ILibraryItem.cs" />
     <Compile Include="DataBase\DBLibrary.cs" />
     <Compile Include="ViewModel\JournalInsertMVM.cs" />
@@ -167,5 +168,6 @@
       <Name>Service</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

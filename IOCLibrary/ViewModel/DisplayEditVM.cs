@@ -1,16 +1,18 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using IOCLibrary.Context;
 using IOCLibrary.DataBase;
 using OOPFFinalProject;
 using OOPFFinalProject.Models;
 using Service;
-using Service.API;
+using Service.IServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,13 +27,14 @@ namespace IOCLibrary
     //In charge of the edit item controls as well.
     public class DisplayEditVM : ViewModelBase, INotifyPropertyChanged
     {
-        readonly IBook _admin;
+        #region Properties&Fields
+        readonly IBook _iBook;
         readonly IFilter _filter;
         readonly IJournal _journal;
         readonly IEditable _editable;
-        static DBLibrary dB = new DBLibrary();
         private ILibraryItem m_SelectedItemn;
         public event PropertyChangedEventHandler PropertyChanged;
+        public static LibraryContext context { get; set; }
         public ILibraryItem SelectedItem
         {
             get
@@ -63,49 +66,24 @@ namespace IOCLibrary
         public int EditPrice { get; set; }
         public double EditDiscount { get; set; }
         public int EditStock { get; set; }
-        public DisplayEditVM(IBook admin, IEditable editable, IFilter filter, IJournal journal)
+        #endregion
+        public DisplayEditVM(IBook iBook, IEditable editable, IFilter filter, IJournal journal, LibraryContext libraryContext)
         {
-            _admin = admin;
+            _iBook = iBook;
             _filter = filter;
             _editable = editable;
             _journal = journal;
-
-            //Filling the library with DB items.
-            LoadDB();
+            context = libraryContext;
 
             CollectionView = CollectionViewSource.GetDefaultView(CollectionManager.FilterCollection);
             _filter.RefreshEvent += RefreshFilteredCollection;
-            _admin.RefreshEvent += RefreshFilteredCollection;
-            _admin.AddEvent += AddBookToDB;
+            _iBook.RefreshEvent += RefreshFilteredCollection;
             _journal.RefreshEvent += RefreshFilteredCollection;
             EditItemCommand = new RelayCommand(EditItemMethod);
         }
-        private static void LoadDB()
-        {
-            foreach (var journal in dB.Journals.ToList())
-            {
-                CollectionManager.FilterCollection.Add(journal);
-            }
-            foreach (var book in dB.Books.ToList())
-            {
-                CollectionManager.FilterCollection.Add(book);
-            }
-        }
-        public static void AddBookToDB(Book bookFromUser)
-        {
-            try
-            {
-                var temp = bookFromUser.GetPublishedDate;
-                dB.Books.Add(bookFromUser);
-                dB.SaveChanges();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
         private void EditItemMethod()
         {
+            m_SelectedItemn.GetType();
             if (m_SelectedItemn != null)
             {
                 try
@@ -131,7 +109,7 @@ namespace IOCLibrary
         }
         private void EditItemInList(ILibraryItem item, int price, double discount, int stock)
         {
-            var bookToEdit = new Book { GetPrice = price, GetDiscount = discount, GetStock = stock };
+            var bookToEdit = new Book { Price = price, Discount = discount, Stock = stock };
             _editable.EditItem(item, bookToEdit);
         }
         private void ToStringItemMethod(ILibraryItem item)
@@ -140,7 +118,7 @@ namespace IOCLibrary
             {
                 if (item != null)
                 {
-                    string details = $"ISBN:{item.GetISBN} \nName:{item.GetName} \nAuthor:{item.GetAuthor} \nPrice:{item.GetPrice} \nPublished In:{item.GetPublishedDate:d} \nCategory:{item.GetCategory} \n Discount:{item.GetDiscount} \nIn Stock:{item.GetStock}";
+                    string details = $"ISBN:{item.GetISBN} \nName:{item.GetName} \nAuthor:{item.GetAuthor} \nPrice:{item.Price} \nPublished In:{item.GetPublishedDate:d} \nCategory:{item.GetCategory} \n Discount:{item.Discount} \nIn Stock:{item.Stock}";
                     MessageBox.Show(details, "Details:");
                 }
             }
